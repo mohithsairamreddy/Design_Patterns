@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mario Game</title>
+  <!-- Add Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous">
+  <!-- Add NiceCSS theme -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nicecss/2.1.3/nice.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-6">
+        <img id="mario-image" src="images/small_mario.png" alt="Mario">
+      </div>
+      <div class="col-md-6">
+        <div class="button-container">
+          <button id="mushroom-button" class="button btn btn-primary">Mushroom</button>
+          <button id="fire-flower-button" class="button btn btn-danger">Fire Flower</button>
+          <button id="feather-button" class="button btn btn-success">Feather</button>
+          <button id="monster-button" class="button btn btn-warning">Monster</button>
+        </div>
+        <div class="console mt-5">
+          <p class="mb-2">Life Count:</p>
+          <p id="life-count" class="display-4">1</p>
+          <p class="mb-2">Coins Count:</p>
+          <p id="coins-count" class="display-4">0</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="state.js" defer></script>
+  <!-- Add Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybB5IXNxFwWQfE7u8Lj+XJHAxKlXiG/8rsrtpb6PEdzD828Ii" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+</body>
+</html>
