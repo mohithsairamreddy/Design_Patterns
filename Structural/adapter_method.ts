@@ -1,73 +1,110 @@
-interface Payment{
-    id : string;
-    total : number;
-    submit_payment():void;
+// Target Interface
+interface Payment {
+    id: string;
+    total: number;
+    submit_payment(): void;
 }
 
-class payments implements Payment{
-    id : string;
-    total : number;
-    constructor(id:string,total:number){
-        this.id=id;
-        this.total=total;
-    }
-    submit_payment(){
-        console.log(`The amount for Payment id ${this.id} is ${this.total}`);
-    }
-
+// Adapted Class 1 (Credit Card Payment)
+interface CreditCardPayment {
+    id: number;
+    total: number;
+    cvv: string;
+    payment_request(): void;
 }
 
-interface Third_Party_Payment{
-    id : number;
-    total:number;
-    payment_request():void;
-}
-
-class third_party_payments implements Third_Party_Payment{
-    id :number;
-    total : number;
-    constructor(id:number,total:number){
-        this.total=total;
-        this.id=id;
+class CreditCardPayments implements CreditCardPayment {
+    id: number;
+    total: number;
+    cvv: string;
+    constructor(id: number, total: number, cvv: string) {
+        this.id = id;
+        this.total = total;
+        this.cvv = cvv;
     }
-    payment_request(){
-        console.log(`The amount for Payment id ${this.id} is ${this.total}`);
+    payment_request() {
+        console.log(`Processing credit card payment of ${this.total} for Payment id ${this.id} with CVV ${this.cvv}`);
     }
 }
 
-enum payment_type{
-    my_payment,
-    third_party
+// Adapted Class 2 (PayPal Payment)
+interface PayPalPayment {
+    orderId: string;
+    amount: number;
+    processPayment(): void;
 }
 
-
-class payment_adapter implements Payment{
-    id : string;
-    total : number;
-    type : payment_type;
-    constructor(id:string,total:number,type:payment_type){
-        this.id=id;
-        this.total=total;
-        this.type=type;
+class PayPalPayments implements PayPalPayment {
+    orderId: string;
+    amount: number;
+    constructor(orderId: string, amount: number) {
+        this.orderId = orderId;
+        this.amount = amount;
     }
-    public submit_payment(){
-        if(this.type == payment_type.my_payment){
-            const id = this.id;
-            const total = this.total;
-            const payment =  new payments(id,total);
-            payment.submit_payment();
+    processPayment() {
+        console.log(`Processing PayPal payment of ${this.amount} for order ${this.orderId}`);
+    }
+}
+
+// Adapted Class 3 (Cash Payment)
+class CashPayments {
+    total: number;
+    constructor(total: number) {
+        this.total = total;
+    }
+    submit_payment() {
+        console.log(`Processing cash payment of ${this.total}`);
+    }
+}
+
+// Payment Type Enum
+enum PaymentType {
+    CreditCard,
+    PayPal,
+    Cash
+}
+
+// Adapter
+class PaymentAdapter implements Payment {
+    id: string;
+    total: number;
+    type: PaymentType;
+    cvv?: string; 
+
+    constructor(id: string, total: number, type: PaymentType, cvv?: string) {
+        this.id = id;
+        this.total = total;
+        this.type = type;
+        if (cvv) this.cvv = cvv;
+    }
+
+    public submit_payment() {
+        switch (this.type) {
+            case PaymentType.CreditCard:
+                if (!this.cvv) {
+                    throw new Error("CVV is required for credit card payments");
+                }
+                const creditCardPayment = new CreditCardPayments(parseInt(this.id), this.total, this.cvv);
+                creditCardPayment.payment_request();
+                break;
+            case PaymentType.PayPal:
+                const paypalPayment = new PayPalPayments(this.id, this.total);
+                paypalPayment.processPayment();
+                break;
+            case PaymentType.Cash:
+                const cashPayment = new CashPayments(this.total);
+                cashPayment.submit_payment();
+                break;
         }
-        else{
-            const id = parseInt(this.id);
-            const total = this.total;
-            const payment = new third_party_payments(id,total);
-            payment.payment_request();
-        }
     }
 }
 
-let  payments_1= new payment_adapter("123", 47.99, payment_type.third_party);
-payments_1.submit_payment();
+// Client code
+let payments1 = new PaymentAdapter("123", 47.99, PaymentType.CreditCard, "123");
+payments1.submit_payment();
 
+let payments2 = new PaymentAdapter("789", 150.00, PaymentType.PayPal);
+payments2.submit_payment();
 
-
+let payments3 = new PaymentAdapter("101", 200.00, PaymentType.Cash);
+payments3.submit_payment();

@@ -1,7 +1,3 @@
-import * as promptSync from 'prompt-sync';
-
-const prompt = promptSync();
-
 class Waiter {
     private welcomeCustomer: Welcome;
     private serviceCustomer: Service;

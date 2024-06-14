@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "noEmitOnError": false // This option allows compilation to continue even if there are errors
+  },
+  "include": ["./src/**/*"]
+}

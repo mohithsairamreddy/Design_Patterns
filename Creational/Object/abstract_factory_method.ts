@@ -1,83 +1,89 @@
-export{}
-
-interface VehicleFactory {
-    createVehicle(model: string) : any;
+// Abstract Factory Interface
+interface IVehicleFactory {
+    createVehicle(model: string): IVehicle;
 }
 
-class CreateVehicleModel implements VehicleFactory {
-   createVehicle(model: string)  : any { 
-       if (model == "bus") {
-           return new Bus();
-       } else  {
-           return new Bike();
-       } 
-   }
+// Abstract Product Interfaces
+interface IVehicle {
+    createBrand(brand: string): IBrand;
 }
 
-interface BusFactory extends CreateVehicleModel {
-    createBusBrand(brand: string) : any;
+interface IBrand {
+    welcome(): void;
 }
 
-
-class Bus implements BusFactory{
-   createBusBrand(brand:string):any{
-       if(brand=="volvo"){
-           return new volvo();
-       }
-       else{
-           return new scania();
-       }
-   }
+// Concrete Vehicle Factories
+class CreateVehicleFactory implements IVehicleFactory {
+    createVehicle(model: string): IVehicle {
+        if (model === "bus") {
+            return new BusFactory();
+        } else if (model === "bike") {
+            return new BikeFactory();
+        } else {
+            throw new Error("Unknown vehicle model");
+        }
+    }
 }
 
-interface BikeFactory extends CreateVehicleModel {
-    createBikeBrand(brand: string) : any;
+// Concrete Vehicle Factories for Bus
+class BusFactory implements IVehicle {
+    createBrand(brand: string): IBrand {
+        if (brand === "volvo") {
+            return new Volvo();
+        } else if (brand === "scania") {
+            return new Scania();
+        } else {
+            throw new Error("Unknown bus brand");
+        }
+    }
 }
 
-class Bike implements BikeFactory{
-   createVehicle(model: string) {
-       throw new Error("Method not implemented.");
-   }
-   createBikeBrand(brand:string):any{
-       if(brand=="ducati"){
-           return new ducati();
-       }
-       else{
-           return new ninja();
-       }
-   }
+// Concrete Vehicle Factories for Bike
+class BikeFactory implements IVehicle {
+    createBrand(brand: string): IBrand {
+        if (brand === "ducati") {
+            return new Ducati();
+        } else if (brand === "ninja") {
+            return new Ninja();
+        } else {
+            throw new Error("Unknown bike brand");
+        }
+    }
 }
 
-
-class ducati extends Bike {
-   welcome() {
-       console.log("Thank you for choosing Ducati as your vehicle");
-   }
+// Concrete Bus Brands
+class Volvo implements IBrand {
+    welcome() {
+        console.log("Thank you for choosing Volvo as your vehicle");
+    }
 }
 
-class ninja extends Bike {
-   welcome() {
-       console.log("Thank you for choosing ninja as your vehicle");
-   }
+class Scania implements IBrand {
+    welcome() {
+        console.log("Thank you for choosing Scania as your vehicle");
+    }
 }
 
-class volvo extends Bus {
-   welcome() {
-       console.log("Thank you for choosing Volvo as your vehicle");
-   }
+// Concrete Bike Brands
+class Ducati implements IBrand {
+    welcome() {
+        console.log("Thank you for choosing Ducati as your vehicle");
+    }
 }
 
-class scania extends Bus {
-   welcome() {
-       console.log("Thank you for choosing Volvo as your vehicle");
-   }
+class Ninja implements IBrand {
+    welcome() {
+        console.log("Thank you for choosing Ninja as your vehicle");
+    }
 }
 
+// Client Code
+let vehicleFactory = new CreateVehicleFactory();
 
-let vehicle = new CreateVehicleModel();
-let bus_model = vehicle.createVehicle("bus");
-bus_model.createBusBrand("volvo").welcome();
+let busFactory = vehicleFactory.createVehicle("bus");
+let busBrand = busFactory.createBrand("volvo");
+busBrand.welcome();
 
-let bike_model=vehicle.createVehicle("bike");
-bike_model.createBikeBrand("ninja").welcome();
-
+let bikeFactory = vehicleFactory.createVehicle("bike");
+let bikeBrand = bikeFactory.createBrand("ninja");
+bikeBrand.welcome();
